@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DO YOU WANT SEE A MAGIC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            font-family: sans-serif;
+            overflow:hidden; 
+            background: #000000;
+        }
+
+        .scene {
+            position: 
+            relative; 
+            width: 100vw; 
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items:center;
+            background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
+        }
+
+        /* The Curtain */
+        #wipe-curtain {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: #1a1a1a; 
+            z-index: 10;
+            transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        #snow-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* Background Circles inside curtain */
+        .circle div { position: absolute; opacity: 0.3; border-radius: 50%; }
+        #c1 { height: 250px; width: 250px; background: #049788; bottom: 0; right: 0; }
+        #c2 { height: 200px; width: 200px; background: #720497; bottom: 0; right: 10%; }
+        #c3 { height: 300px; width: 300px; background: #97044d; bottom: 10%; right: 0; }
+        #c4 { height: 130px; width: 130px; background: #045c97; bottom: 0; left: 0; }
+        #c5 { height: 230px; width: 230px; background: #3cce1f; bottom: 0; left: 0; }
+        #c6 { height: 230px; width: 230px; background: #1fa5ce; top: 0; left: 10%; }
+
+        /* Button Styling */
+        button {
+            align-items:center; 
+            background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+            border: 0; 
+            border-radius: 8px; 
+            color: #ffffff; 
+            display: flex; 
+            font-size: 18px;
+            padding: 3px; 
+            cursor: pointer; 
+            opacity: 0; 
+            position: relative; 
+            z-index: 15;
+            transition: opacity 1s ease-in, transform 0.3s;
+        }
+        button span { 
+            background-color: rgb(5, 6, 45); 
+            padding: 16px 24px; 
+            border-radius: 6px; }
+        button:hover span { 
+            background: none; 
+        }
+        button:active { 
+            transform: scale(0.9); 
+        }
+
+        /* Stars */
+        .star {
+            position: absolute; 
+            background-color: white; 
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+        @keyframes twinkle {
+            0%, 100% {
+                 opacity: 0.2; 
+                transform: scale(0.8); 
+            }
+            50% {
+                 opacity: 1; 
+                transform: scale(1.2);
+            }
+        }
+
+        /* --- ADVANCED SNOWMAN --- */
+        .snowman {
+            position: absolute; 
+            width: 30px; 
+            height: 30px; 
+            background: white;
+            border-radius: 50%; 
+            z-index: 5;
+        }
+        .snowman::before { /* Head */
+            content: ''; 
+            position: absolute; 
+            top: -18px; 
+            left: 5px;
+            width: 20px; 
+            height: 20px; 
+            background: white; 
+            border-radius: 50%;
+        }
+        .snowman::after { /* Bottom */
+            content: ''; 
+            position: absolute; 
+            bottom: -18px; 
+            left: -5px;
+            width: 40px; 
+            height: 40px; 
+            background: white; 
+            border-radius: 50%;
+        }
+        /* The Red Hat */
+        .hat {
+            position: absolute; 
+            top: -25px; 
+            left: 7px; 
+            width: 16px; 
+            height: 10px;
+            background: red; 
+            border-radius: 2px; 
+            z-index: 6;
+        }
+        .hat::after { /* Brim */
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            left: -4px;
+            width: 24px; 
+            height: 3px; 
+            background: red;
+        }
+        /* Stick Arms */
+        .arm {
+            position: absolute; 
+            width: 20px; 
+            height: 2px; 
+            background: #4b2c20; 
+            top: 5px;
+        }
+        .arm.left {
+             left: -15px; 
+             transform: rotate(-30deg); 
+            }
+        .arm.right {
+             right: -15px; 
+             transform: rotate(30deg); 
+            }
+       
+
+
+
+
+
+
+
+        /* Container to center everything perfectly */
+.text-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5; /* Behind curtain (z-10), above stars */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    
+    /* PURE CSS REVEAL */
+    opacity: 0;
+    animation: reveal 1.5s ease-in forwards;
+    animation-delay: 3.5s; /* Waits for the curtain to finish wiping */
+}
+
+/* Beautiful Text Effects */
+h1 {
+    color: white;
+    font-size: 3rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(175, 64, 255, 0.4);
+}
+
+h2 {
+    color: #00ddeb; /* Matching the button's glow */
+    font-size: 1.8rem;
+    margin: 10px 0 30px 0;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 221, 235, 0.5);
+}
+
+/* Ensure the button inherits the reveal from the parent */
+button {
+    opacity: 1 !important; /* Overriding your old style since parent handles it */
+    position: relative;
+    cursor: pointer;
+}
+
+/* The Reveal Keyframes */
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%); /* Slight upward drift */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="scene" id="star-container">
+        <div id="wipe-curtain">
+            <canvas id="snow-canvas"></canvas>
+            <div class="circle">
+                <div id="c1"></div><div id="c2"></div><div id="c3"></div>
+                <div id="c4"></div><div id="c5"></div><div id="c6"></div>
+            </div>
+        </div>
+        <div class="text-content">
+        <h1>Hey Cutie, Do You Believe in</h1>
+        <h2>Christmas Magic</h2>
+        <div class="container">
+            <button id="action-btn" onclick="open_page()"><span>SEE THE MAGIC</span></button>
+        </div>
+    </div>
+    </div>
+
+    <script src="script1.js">
+       
+    </script>
+</body>
+</html>
